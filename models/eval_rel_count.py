@@ -20,6 +20,8 @@ from lib.evaluation.sg_eval import BasicSceneGraphEvaluator
 from tqdm import tqdm
 from copy import deepcopy
 import dill as pkl
+import os
+os.environ["CUDA_VISIBLE_DEVICES"]="3"
 
 cudnn.benchmark = True
 conf = ModelConfig()

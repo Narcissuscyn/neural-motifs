@@ -14,13 +14,16 @@ from config import ModelConfig, FG_FRACTION, RPN_FG_FRACTION, IM_SCALE, BOX_SCAL
 from torch.nn import functional as F
 from lib.fpn.box_utils import bbox_loss
 import torch.backends.cudnn as cudnn
-from pycocotools.cocoeval import COCOeval
+from lib.pycocotools.cocoeval import COCOeval
 from lib.pytorch_misc import optimistic_restore, clip_grad_norm
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 cudnn.benchmark = True
 conf = ModelConfig()
-
+import os
+os.environ["CUDA_VISIBLE_DEVICES"]="2"
+train=[]
+val=[]
 if conf.coco:
     train, val = CocoDetection.splits()
     val.ids = val.ids[:conf.val_size]
@@ -45,13 +48,16 @@ if conf.use_proposals:
         if n.startswith('features'):
             param.requires_grad = False
 
+# optimizer = optim.SGD([p for p in detector.parameters() if p.requires_grad],
+#                       weight_decay=conf.l2, lr=conf.lr * conf.num_gpus * conf.batch_size, momentum=0.9)
 optimizer = optim.SGD([p for p in detector.parameters() if p.requires_grad],
-                      weight_decay=conf.l2, lr=conf.lr * conf.num_gpus * conf.batch_size, momentum=0.9)
+                      weight_decay=conf.l2, lr=0.018, momentum=0.9)
 scheduler = ReduceLROnPlateau(optimizer, 'max', patience=3, factor=0.1,
                               verbose=True, threshold=0.001, threshold_mode='abs', cooldown=1)
 
 start_epoch = -1
 if conf.ckpt is not None:
+    print("Load detector model")
     ckpt = torch.load(conf.ckpt)
     if optimistic_restore(detector, ckpt['state_dict']):
         start_epoch = ckpt['epoch']
@@ -178,6 +184,7 @@ def val_epoch():
     coco_eval.accumulate()
     coco_eval.summarize()
     mAp = coco_eval.stats[1]
+    # print("mAP=",mAp)
     return mAp
 
 
@@ -203,16 +210,19 @@ def val_batch(batch_num, b):
 
     return np.column_stack((im_inds_np, boxes_np, scores_np, cls_preds_np))
 
+if 1:
+    print("Training starts now!")
+    for epoch in range(start_epoch + 1, start_epoch + 1 + conf.num_epochs):
+        rez = train_epoch(epoch)
+        print("overall{:2d}: ({:.3f})\n{}".format(epoch, rez.mean(1)['total'], rez.mean(1)), flush=True)
+        mAp = val_epoch()
+        scheduler.step(mAp)
 
-print("Training starts now!")
-for epoch in range(start_epoch + 1, start_epoch + 1 + conf.num_epochs):
-    rez = train_epoch(epoch)
-    print("overall{:2d}: ({:.3f})\n{}".format(epoch, rez.mean(1)['total'], rez.mean(1)), flush=True)
+        torch.save({
+            'epoch': epoch,
+            'state_dict': detector.state_dict(),
+            'optimizer': optimizer.state_dict(),
+        }, os.path.join(conf.save_dir, '{}-{}.tar'.format('coco' if conf.coco else 'vg', epoch)))
+else:
     mAp = val_epoch()
-    scheduler.step(mAp)
-
-    torch.save({
-        'epoch': epoch,
-        'state_dict': detector.state_dict(),
-        'optimizer': optimizer.state_dict(),
-    }, os.path.join(conf.save_dir, '{}-{}.tar'.format('coco' if conf.coco else 'vg', epoch)))
+    print("mAP=",mAp)

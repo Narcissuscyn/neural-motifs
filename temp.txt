@@ -1,0 +1,292 @@
+coco : False
+ckpt : /home/new/file/dataset/VG1.4/vg-faster-rcnn.tar
+det_ckpt :
+save_dir : ./checkpoints
+num_gpus : 1
+num_workers : 1
+lr : 0.001
+batch_size : 6
+val_size : 5000
+l2 : 0.0001
+clip : 5.0
+print_interval : 100
+mode : sgdet
+model : motifnet
+old_feats : False
+order : confidence
+cache :
+gt_box : False
+adam : False
+test : True
+multi_pred : False
+num_epochs : 25
+use_resnet : False
+use_proposals : False
+nl_obj : 1
+nl_edge : 2
+hidden_dim : 256
+pooling_dim : 4096
+pass_in_obj_feats_to_decoder : False
+pass_in_obj_feats_to_edge : False
+rec_dropout : 0.1
+use_bias : False
+use_tanh : False
+limit_vision : False
+test data!
+100%|█████████████████████████████████| 26446/26446 [00:00<00:00, 138272.61it/s]
+ Rel acc=68.00%, 4.27% zsl
+100%|█████████████████████████████████████| 26446/26446 [42:39<00:00, 10.33it/s]
+======================sgdet============================
+R@20: 0.177577
+R@50: 0.235745
+R@100: 0.276802
+100%|█████████████████████████████████████| 26446/26446 [12:27<00:00, 35.37it/s]
+======================predcls============================
+R@20: 0.494157
+R@50: 0.599893
+R@100: 0.641689
+======================sgcls============================
+R@20: 0.277907
+R@50: 0.324037
+R@100: 0.340364
+
+#############################################################检测结果
+creating index...
+index created!
+Loading and preparing results...
+Converting ndarray to lists...
+(293964, 7)
+0/293964
+DONE (t=1.01s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=38.06s).
+Accumulating evaluation results...
+DONE (t=7.74s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.098
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.204
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.087
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.044
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.122
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.176
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.249
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.251
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.139
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.291
+mAP= 0.20430966146476465
+
+
+overall26: (0.936)
+rpn_class_loss    0.135435
+rpn_box_loss      0.046371
+class_loss        0.663538
+box_loss          0.090837
+total             0.936181
+dtype: float64
+creating index...
+index created!
+Loading and preparing results...
+Converting ndarray to lists...
+(285550, 7)
+0/285550
+DONE (t=1.11s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=36.84s).
+Accumulating evaluation results...
+DONE (t=7.49s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.070
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.165
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.048
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.033
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.084
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.134
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.187
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.102
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.215
+
+
+ motif_stanford net：
+ ---Total norm 6.092 clip coef 0.821-----------------
+edge_unary.weight                                 : 3.636, (torch.Size([512, 4096]))
+edge_gru.weight_ih                                : 2.534, (torch.Size([1536, 512]))
+node_gru.weight_ih                                : 2.177, (torch.Size([1536, 512]))
+rel_fc.weight                                     : 1.872, (torch.Size([51, 512]))
+roi_fmap.1.3.weight                               : 1.858, (torch.Size([4096, 4096]))
+obj_fc.weight                                     : 1.110, (torch.Size([151, 512]))
+edge_gru.bias_ih                                  : 1.106, (torch.Size([1536]))
+rel_fc.bias                                       : 0.966, (torch.Size([51]))
+roi_fmap.1.0.weight                               : 0.813, (torch.Size([4096, 25088]))
+obj_unary.weight                                  : 0.800, (torch.Size([512, 4096]))
+edge_gru.bias_hh                                  : 0.553, (torch.Size([1536]))
+roi_fmap_obj.3.weight                             : 0.468, (torch.Size([4096, 4096]))
+union_boxes.conv.4.weight                         : 0.382, (torch.Size([512, 256, 3, 3]))
+edge_gru.weight_hh                                : 0.305, (torch.Size([1536, 512]))
+node_gru.bias_ih                                  : 0.281, (torch.Size([1536]))
+roi_fmap_obj.0.weight                             : 0.251, (torch.Size([4096, 25088]))
+node_gru.weight_hh                                : 0.215, (torch.Size([1536, 512]))
+edge_unary.bias                                   : 0.190, (torch.Size([512]))
+obj_fc.bias                                       : 0.185, (torch.Size([151]))
+node_gru.bias_hh                                  : 0.142, (torch.Size([1536]))
+roi_fmap.1.3.bias                                 : 0.110, (torch.Size([4096]))
+union_boxes.conv.0.weight                         : 0.094, (torch.Size([256, 2, 7, 7]))
+obj_unary.bias                                    : 0.084, (torch.Size([512]))
+out_edge_w_fc.0.weight                            : 0.080, (torch.Size([1, 1024]))
+in_edge_w_fc.0.weight                             : 0.080, (torch.Size([1, 1024]))
+obj_vert_w_fc.0.weight                            : 0.067, (torch.Size([1, 1024]))
+sub_vert_w_fc.0.weight                            : 0.067, (torch.Size([1, 1024]))
+union_boxes.conv.6.bias                           : 0.042, (torch.Size([512]))
+out_edge_w_fc.0.bias                              : 0.021, (torch.Size([1]))
+in_edge_w_fc.0.bias                               : 0.020, (torch.Size([1]))
+roi_fmap_obj.3.bias                               : 0.020, (torch.Size([4096]))
+roi_fmap.1.0.bias                                 : 0.010, (torch.Size([4096]))
+obj_vert_w_fc.0.bias                              : 0.010, (torch.Size([1]))
+sub_vert_w_fc.0.bias                              : 0.010, (torch.Size([1]))
+union_boxes.conv.0.bias                           : 0.010, (torch.Size([256]))
+union_boxes.conv.2.weight                         : 0.008, (torch.Size([256]))
+union_boxes.conv.6.weight                         : 0.007, (torch.Size([512]))
+union_boxes.conv.2.bias                           : 0.006, (torch.Size([256]))
+union_boxes.conv.4.bias                           : 0.006, (torch.Size([512]))
+roi_fmap_obj.0.bias                               : 0.002, (torch.Size([4096]))
+-------------------------------
+RelModelStanford(
+  (detector): ObjectDetector(
+    (features): Sequential(
+      (0): Conv2d (3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): ReLU(inplace)
+      (2): Conv2d (64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (3): ReLU(inplace)
+      (4): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), dilation=(1, 1))
+      (5): Conv2d (64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (6): ReLU(inplace)
+      (7): Conv2d (128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (8): ReLU(inplace)
+      (9): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), dilation=(1, 1))
+      (10): Conv2d (128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (11): ReLU(inplace)
+      (12): Conv2d (256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (13): ReLU(inplace)
+      (14): Conv2d (256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (15): ReLU(inplace)
+      (16): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), dilation=(1, 1))
+      (17): Conv2d (256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (18): ReLU(inplace)
+      (19): Conv2d (512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (20): ReLU(inplace)
+      (21): Conv2d (512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (22): ReLU(inplace)
+      (23): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), dilation=(1, 1))
+      (24): Conv2d (512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (25): ReLU(inplace)
+      (26): Conv2d (512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (27): ReLU(inplace)
+      (28): Conv2d (512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (29): ReLU(inplace)
+    )
+    (roi_fmap): Sequential(
+      (0): Linear(in_features=25088, out_features=4096)
+      (1): ReLU(inplace)
+      (2): Dropout(p=0.5)
+      (3): Linear(in_features=4096, out_features=4096)
+      (4): ReLU(inplace)
+      (5): Dropout(p=0.5)
+    )
+    (score_fc): Linear(in_features=4096, out_features=151)
+    (bbox_fc): Linear(in_features=4096, out_features=604)
+    (rpn_head): RPNHead(
+      (conv): Sequential(
+        (0): Conv2d (512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): ReLU6(inplace)
+        (2): Conv2d (512, 120, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+  )
+  (union_boxes): UnionBoxesAndFeats(
+    (conv): Sequential(
+      (0): Conv2d (2, 256, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3))
+      (1): ReLU(inplace)
+      (2): BatchNorm2d(256, eps=1e-05, momentum=0.01, affine=True)
+      (3): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), dilation=(1, 1))
+      (4): Conv2d (256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (5): ReLU(inplace)
+      (6): BatchNorm2d(512, eps=1e-05, momentum=0.01, affine=True)
+    )
+  )
+  (roi_fmap): Sequential(
+    (0): Flattener(
+    )
+    (1): Sequential(
+      (0): Linear(in_features=25088, out_features=4096)
+      (1): ReLU(inplace)
+      (2): Dropout(p=0.5)
+      (3): Linear(in_features=4096, out_features=4096)
+    )
+  )
+  (roi_fmap_obj): Sequential(
+    (0): Linear(in_features=25088, out_features=4096)
+    (1): ReLU(inplace)
+    (2): Dropout(p=0.5)
+    (3): Linear(in_features=4096, out_features=4096)
+    (4): ReLU(inplace)
+    (5): Dropout(p=0.5)
+  )
+  (rel_compress): Linear(in_features=4096, out_features=51)
+  (freq_bias): FrequencyBias(
+    (obj_baseline): Embedding(22801, 51)
+  )
+  (rel_fc): Linear(in_features=512, out_features=51)
+  (obj_fc): Linear(in_features=512, out_features=151)
+  (obj_unary): Linear(in_features=4096, out_features=512)
+  (edge_unary): Linear(in_features=4096, out_features=512)
+  (edge_gru): GRUCell(512, 512)
+  (node_gru): GRUCell(512, 512)
+  (sub_vert_w_fc): Sequential(
+    (0): Linear(in_features=1024, out_features=1)
+    (1): Sigmoid()
+  )
+  (obj_vert_w_fc): Sequential(
+    (0): Linear(in_features=1024, out_features=1)
+    (1): Sigmoid()
+  )
+  (out_edge_w_fc): Sequential(
+    (0): Linear(in_features=1024, out_features=1)
+    (1): Sigmoid()
+  )
+  (in_edge_w_fc): Sequential(
+    (0): Linear(in_features=1024, out_features=1)
+    (1): Sigmoid()
+  )
+)
+
+检测结果：
+ return Result(
+            od_obj_dists=od_obj_dists,
+            rm_obj_dists=obj_dists,
+            obj_scores=nms_scores,
+            obj_preds=nms_preds,
+            obj_fmap=obj_fmap,
+            od_box_deltas=od_box_deltas,
+            rm_box_deltas=box_deltas,
+            od_box_targets=bbox_targets,
+            rm_box_targets=bbox_targets,
+            od_box_priors=od_box_priors,
+            rm_box_priors=box_priors,
+            boxes_assigned=nms_boxes_assign,
+            boxes_all=nms_boxes,
+            od_obj_labels=obj_labels,
+            rm_obj_labels=rm_obj_labels,
+            rpn_scores=rpn_scores,
+            rpn_box_deltas=rpn_box_deltas,
+            rel_labels=rel_labels,
+            im_inds=im_inds,
+            fmap=fmap if return_fmap else None,
+        )

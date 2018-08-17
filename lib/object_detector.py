@@ -111,7 +111,7 @@ class ObjectDetector(nn.Module):
         """
         Produces feature map from the input image
         :param x: [batch_size, 3, size, size] float32 padded image
-        :return: Feature maps at 1/16 the original size.
+        :return: Feature maps at 1/16 the original size.get ride of the last maxpooling layer.
         Each one is [batch_size, dim, IM_SIZE/k, IM_SIZE/k].
         """
         if not self.use_resnet:
@@ -212,7 +212,7 @@ class ObjectDetector(nn.Module):
         """
         assert gt_boxes is not None
         im_inds = gt_classes[:, 0] - image_offset
-        rois = torch.cat((im_inds.float()[:, None], gt_boxes), 1)
+        rois = torch.cat((im_inds.float()[:, None], gt_boxes), 1)#roi来自gt.
         if gt_rels is not None and self.training:
             rois, labels, rel_labels = proposal_assignments_gtbox(
                 rois.data, gt_boxes.data, gt_classes.data, gt_rels.data, image_offset,
@@ -263,7 +263,7 @@ class ObjectDetector(nn.Module):
 
     def get_boxes(self, *args, **kwargs):
         if self.mode == 'gtbox':
-            fn = self.gt_boxes
+            fn = self.gt_boxes#give bounding box ground truth for sgcls
         elif self.mode == 'proposals':
             assert kwargs['proposals'] is not None
             fn = self.proposal_boxes
@@ -289,9 +289,9 @@ class ObjectDetector(nn.Module):
                                   be used to compute the training loss. Each (img_ind, fpn_idx)
         :return: If train:
         """
-        fmap = self.feature_map(x)
+        fmap = self.feature_map(x)#output size:4*512x37x37(原图是4*3*592*592的),变为原图尺寸的1/16
 
-        # Get boxes from RPN
+        # Get boxes from RPN or ground truth
         rois, obj_labels, bbox_targets, rpn_scores, rpn_box_deltas, rel_labels = \
             self.get_boxes(fmap, im_sizes, image_offset, gt_boxes,
                            gt_classes, gt_rels, train_anchor_inds, proposals=proposals)

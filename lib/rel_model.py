@@ -337,7 +337,7 @@ class RelModel(nn.Module):
         self.limit_vision=limit_vision
         self.require_overlap = require_overlap_det and self.mode == 'sgdet'
 
-        self.detector = ObjectDetector(
+        self.detector = ObjectDetector(#mode在这里的作用主要是标识使用proposal还是使用gt of bounding box
             classes=classes,
             mode=('proposals' if use_proposals else 'refinerels') if mode == 'sgdet' else 'gtbox',
             use_resnet=use_resnet,
@@ -371,7 +371,7 @@ class RelModel(nn.Module):
             if pooling_dim != 4096:
                 roi_fmap.append(nn.Linear(4096, pooling_dim))
             self.roi_fmap = nn.Sequential(*roi_fmap)
-            self.roi_fmap_obj = load_vgg(pretrained=False).classifier
+            self.roi_fmap_obj = load_vgg(pretrained=False).classifier#not pretrained
 
         ###################################
         self.post_lstm = nn.Linear(self.hidden_dim, self.pooling_dim * 2)

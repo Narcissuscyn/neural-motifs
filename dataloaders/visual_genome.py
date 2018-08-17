@@ -17,7 +17,7 @@ from config import VG_IMAGES, IM_DATA_FN, VG_SGG_FN, VG_SGG_DICT_FN, BOX_SCALE, 
 from dataloaders.image_transforms import SquarePad, Grayscale, Brightness, Sharpness, Contrast, \
     RandomOrder, Hue, random_crop
 from collections import defaultdict
-from pycocotools.coco import COCO
+from lib.pycocotools.coco import COCO
 
 
 class VG(Dataset):
@@ -253,8 +253,8 @@ def load_image_filenames(image_file, image_dir=VG_IMAGES):
         basename = '{}.jpg'.format(img['image_id'])
         if basename in corrupted_ims:
             continue
-
-        filename = os.path.join(image_dir, basename)
+        url=img["url"].split("/")[-2]
+        filename = os.path.join(image_dir, url,basename)
         if os.path.exists(filename):
             fns.append(filename)
     assert len(fns) == 108073
@@ -282,7 +282,8 @@ def load_graphs(graphs_file, mode='train', num_im=-1, num_val_im=0, filter_empty
         raise ValueError('{} invalid'.format(mode))
 
     roi_h5 = h5py.File(graphs_file, 'r')
-    data_split = roi_h5['split'][:]
+    data_split = roi_h5['split'][:]###32422为测试集,实际上只有26446张图片，其标识为2；剩下为0 的75651张图片为训练集和验证集，实际上只有62723，前5000为验证集,剩下的57723为训练集
+    #原因是在数据预处理的时候剔除了一些。
     split = 2 if mode == 'test' else 0
     split_mask = data_split == split
 
@@ -298,7 +299,7 @@ def load_graphs(graphs_file, mode='train', num_im=-1, num_val_im=0, filter_empty
         if mode == 'val':
             image_index = image_index[:num_val_im]
         elif mode == 'train':
-            image_index = image_index[num_val_im:]
+            image_index = image_index[num_val_im:]#取5000之后的57723张图片为训练集,总的为62723
 
 
     split_mask = np.zeros_like(data_split).astype(bool)

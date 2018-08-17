@@ -6,18 +6,20 @@ from argparse import ArgumentParser
 import numpy as np
 
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
-DATA_PATH = os.path.join(ROOT_PATH, 'data')
+# DATA_PATH = os.path.join(ROOT_PATH, 'data')
+DATA_PATH = os.path.join("/home/new/file/dataset/VG1.4")
 
 def path(fn):
     return os.path.join(DATA_PATH, fn)
 
 def stanford_path(fn):
-    return os.path.join(DATA_PATH, 'stanford_filtered', fn)
+    return os.path.join(DATA_PATH, fn)
 
 # =============================================================================
 # Update these with where your data is stored ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-VG_IMAGES = '/home/rowan/datasets2/VG_100K_2/VG_100K'
+# VG_IMAGES = '/home/rowan/datasets2/VG_100K_2/VG_100K'
+VG_IMAGES = '/home/new/file/dataset/VG1.4/vg'
 RCNN_CHECKPOINT_FN = path('faster_rcnn_500k.h5')
 
 IM_DATA_FN = stanford_path('image_data.json')
@@ -66,7 +68,7 @@ class ModelConfig(object):
         """
         Defaults
         """
-        self.coco = None
+        self.coco = False
         self.ckpt = None
         self.save_dir = None
         self.lr = None
@@ -150,13 +152,13 @@ class ModelConfig(object):
 
         # Options to deprecate
         parser.add_argument('-coco', dest='coco', help='Use COCO (default to VG)', action='store_true')
-        parser.add_argument('-ckpt', dest='ckpt', help='Filename to load from', type=str, default='')
+        parser.add_argument('-ckpt', dest='ckpt', help='Filename to load from', type=str, default='/home/new/file/dataset/VG1.4/vg-faster-rcnn.tar')
         parser.add_argument('-det_ckpt', dest='det_ckpt', help='Filename to load detection parameters from', type=str, default='')
 
         parser.add_argument('-save_dir', dest='save_dir',
-                            help='Directory to save things to, such as checkpoints/save', default='', type=str)
+                            help='Directory to save things to, such as checkpoints/save', default='./checkpoints', type=str)
 
-        parser.add_argument('-ngpu', dest='num_gpus', help='cuantos GPUs tienes', type=int, default=3)
+        parser.add_argument('-ngpu', dest='num_gpus', help='cuantos GPUs tienes', type=int, default=1)
         parser.add_argument('-nwork', dest='num_workers', help='num processes to use as workers', type=int, default=1)
 
         parser.add_argument('-lr', dest='lr', help='learning rate', type=float, default=1e-3)

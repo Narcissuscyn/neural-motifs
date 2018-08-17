@@ -1,7 +1,7 @@
 from config import COCO_PATH, IM_SCALE, BOX_SCALE
 import os
 from torch.utils.data import Dataset
-from pycocotools.coco import COCO
+from lib.pycocotools.coco import COCO
 from PIL import Image
 from lib.fpn.anchor_targets import anchor_target_layer
 from torchvision.transforms import Resize, Compose, ToTensor, Normalize

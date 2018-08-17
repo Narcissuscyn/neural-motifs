@@ -9,7 +9,6 @@ import torch
 import pandas as pd
 import time
 import os
-
 from config import ModelConfig, BOX_SCALE, IM_SCALE
 from torch.nn import functional as F
 from lib.pytorch_misc import optimistic_restore, de_chunkize, clip_grad_norm
@@ -17,6 +16,7 @@ from lib.evaluation.sg_eval import BasicSceneGraphEvaluator
 from lib.pytorch_misc import print_para
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
+os.environ["CUDA_VISIBLE_DEVICES"]="3"
 conf = ModelConfig()
 if conf.model == 'motifnet':
     from lib.rel_model import RelModel
@@ -28,7 +28,7 @@ else:
 train, val, _ = VG.splits(num_val_im=conf.val_size, filter_duplicate_rels=True,
                           use_proposals=conf.use_proposals,
                           filter_non_overlap=conf.mode == 'sgdet')
-train_loader, val_loader = VGDataLoader.splits(train, val, mode='rel',
+train_loader, val_loader = VGDataLoader.splits(train, val, mode='rel',#这个mode的作用是标识需不需要加载关系数据
                                                batch_size=conf.batch_size,
                                                num_workers=conf.num_workers,
                                                num_gpus=conf.num_gpus)
@@ -82,13 +82,14 @@ if conf.ckpt.split('-')[-2].split('/')[-1] == 'vgrel':
         # optimistic_restore(detector.detector, torch.load('checkpoints/vgdet/vg-28.tar')['state_dict'])
 else:
     start_epoch = -1
-    optimistic_restore(detector.detector, ckpt['state_dict'])
+    optimistic_restore(detector.detector, ckpt['state_dict'])#物体检测器参数恢复
 
+    #两个Linear layer，来自VGG16的预训练好的层
     detector.roi_fmap[1][0].weight.data.copy_(ckpt['state_dict']['roi_fmap.0.weight'])
     detector.roi_fmap[1][3].weight.data.copy_(ckpt['state_dict']['roi_fmap.3.weight'])
     detector.roi_fmap[1][0].bias.data.copy_(ckpt['state_dict']['roi_fmap.0.bias'])
     detector.roi_fmap[1][3].bias.data.copy_(ckpt['state_dict']['roi_fmap.3.bias'])
-
+    # 两个Linear layer，来自VGG16的未训练的classifier
     detector.roi_fmap_obj[0].weight.data.copy_(ckpt['state_dict']['roi_fmap.0.weight'])
     detector.roi_fmap_obj[3].weight.data.copy_(ckpt['state_dict']['roi_fmap.3.weight'])
     detector.roi_fmap_obj[0].bias.data.copy_(ckpt['state_dict']['roi_fmap.0.bias'])

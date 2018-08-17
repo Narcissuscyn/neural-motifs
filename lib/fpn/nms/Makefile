@@ -1,5 +1,5 @@
 all: src/cuda/nms.cu.o
-	python build.py
+	/home/new/software/anaconda3/bin/python build.py
 
 src/cuda/nms.cu.o: src/cuda/nms_kernel.cu
 	$(MAKE) -C src/cuda

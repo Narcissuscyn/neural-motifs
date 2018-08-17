@@ -12,7 +12,7 @@ CUDA_PATH=/usr/local/cuda/
 #   35                    K40, K20
 #   30                    K10, Grid K520 (AWS G2)
 
-CUDA_MODELS=(52 61)
+CUDA_MODELS=(61)
 
 # Nvidia doesn't guarantee binary compatability across GPU versions.
 # However, binary compatibility within one GPU generation can be guaranteed
@@ -39,4 +39,4 @@ cd src
 echo "Compiling kernel"
 /usr/local/cuda/bin/nvcc -c -o highway_lstm_kernel.cu.o highway_lstm_kernel.cu --compiler-options -fPIC $CUDA_MODEL_TARGETS
 cd ../
-python build.py
+/home/new/software/anaconda3/bin/python build.py

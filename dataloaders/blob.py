@@ -192,7 +192,7 @@ class Blob(object):
         if index not in list(range(self.num_gpus)):
             raise ValueError("Out of bounds with index {} and {} gpus".format(index, self.num_gpus))
 
-        if self.is_rel:
+        if self.is_rel:#是关系预测的话就需要加载关系数据，否则就不用
             rels = self.gt_rels
             if index > 0 or self.num_gpus != 1:
                 rels_i = rels[index] if self.is_rel else None
