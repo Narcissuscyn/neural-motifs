@@ -160,7 +160,7 @@ class RelModelStanford(RelModel):
             return result
 
         # Decode here ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        if self.mode == 'predcls':
+        if self.mode == 'predcls':#不需要预测标签，直接用 ground truth
             # Hack to get the GT object labels
             result.obj_scores = result.rm_obj_dists.data.new(gt_classes.size(0)).fill_(1)
             result.obj_preds = gt_classes.data[:, 1]

@@ -34,7 +34,7 @@ train_loader, val_loader = VGDataLoader.splits(train, val, mode='rel',#这个mod
                                                num_gpus=conf.num_gpus)
 
 detector = RelModel(classes=train.ind_to_classes, rel_classes=train.ind_to_predicates,
-                    num_gpus=conf.num_gpus, mode=conf.mode, require_overlap_det=True,
+                    num_gpus=conf.num_gpus, mode=conf.mode, require_overlap_det=True,#这个conf.mode用于区分三种实验：predcls,sgcls,sgdet
                     use_resnet=conf.use_resnet, order=conf.order,
                     nl_edge=conf.nl_edge, nl_obj=conf.nl_obj, hidden_dim=conf.hidden_dim,
                     use_proposals=conf.use_proposals,

@@ -337,7 +337,7 @@ class RelModel(nn.Module):
         self.limit_vision=limit_vision
         self.require_overlap = require_overlap_det and self.mode == 'sgdet'
 
-        self.detector = ObjectDetector(#mode在这里的作用主要是标识使用proposal还是使用gt of bounding box
+        self.detector = ObjectDetector(# mode在这里的作用主要是标识使用proposal还是使用gt of bounding box
             classes=classes,
             mode=('proposals' if use_proposals else 'refinerels') if mode == 'sgdet' else 'gtbox',
             use_resnet=use_resnet,
